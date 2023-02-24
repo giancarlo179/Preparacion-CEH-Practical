@@ -1,5 +1,6 @@
 2.	FOOTPRINTING
 
+
 #Google Dorks
 Operador	Descripción	Ejemplo
 “ ”	Coincide exactamente con el texto entre comillas dobles	“Behackerpro”
@@ -17,6 +18,7 @@ intitle:	Busca el termino escrito dentro del título	intitle:mikrotik
 allintitle:	Devuelve resultados que coincidan en el título con el término escrito	allintitle:”Noticias Principales de Colombia”
 intext:	Busca páginas que en su texto contienen el termino escrito 	intext:owasp
 allintext:	Devuelve todos los resultados que contengan todas las palabras especificadas	allintext:”asterisk digium
+
 
 Information Gathering
 
