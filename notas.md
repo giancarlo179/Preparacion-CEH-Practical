@@ -23,7 +23,7 @@ allintext:	Devuelve todos los resultados que contengan todas las palabras especi
 
 
 Information Gathering
-
+````js
 •	https://larutadelhacker.com/google-dorks-busquedas-avanzadas-en-google/ Google Dorks
 •	https://dorksearch.com/ Google Dorks
 •	https://citizenevidence.amnestyusa.org/ Youtube Data viewer
@@ -50,9 +50,11 @@ Information Gathering
 •	dnsrecon – Tool parrot 
 •	https://www.arin.net/  DNS lookup
 •	tracert – Tool (-h amount salts)
-
+````
 3.	SCANNING
-•	Nmap
+
+````js
+/////Nmap
 	-PE: Ping ICMP ECHO scan
 	-PU: UDP ping Scan
 	-PR: arp ping scan 
@@ -92,7 +94,9 @@ NetworkIP/Mask – Search IPs on network
 --rand-source: IP random
 --data: tamaño del cuerpo del paquete 
 --flood: técnica de Inundación de TCP
+````
 •	OS Detection TTL
+![image](https://user-images.githubusercontent.com/32601403/221194121-9a76af3a-d0e0-4e1e-b636-c596cb97830f.png)
  
 
 
