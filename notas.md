@@ -472,7 +472,9 @@ it will compare both files what we need get the md5
 it allow you to hash all the files inside a folder
 // Veracrypt
 Hash-identifier <HASH>
-
+https://www.tunnelsup.com/hash-analyzer/
+https://md5hashing.net/hash_type_checker
+https://crackstation.net/
 ```
 **rainbowtables**
 ```js
