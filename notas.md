@@ -478,7 +478,7 @@ Rainbowtables are already hash with password to perform cracking without calcula
 rtgen // rainbowcrack
 rtgen sha256 loweralpha-numeric 1 10 0 1000 4000 0 // generate a new rainbow table
 // windows
-rtgen md5 loweralpha-hnumeric 1 4 1 1000 1000 0 //
+rtgen md5 loweralpha-numeric 1 4 1 1000 1000 0 //
 then use app rainbowcrack // add the hashes and the rainbow table option
 ```
 ### wireshark
