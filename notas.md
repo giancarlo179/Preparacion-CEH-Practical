@@ -1,14 +1,16 @@
 2.	FOOTPRINTING
 
 
-#Google Dorks
-Operador	Descripción	Ejemplo
-“ ”	Coincide exactamente con el texto entre comillas dobles	“Behackerpro”
-–	Excluye de la búsqueda el término que va después del signo “-”	malware -ransomware
-+	Incluye el término de va después del signo “+”	ciber +resiliencia
-#	Busca un hashtag	#pentesting
-OR	Devuelve resultados sobre un término u otro	Smartphone OR tablet
-|	Devuelve resultados sobre un término u otro. El mismo OR	blackhat | defcon
+#####Google Dorks
+
+|Operador|	Descripción|	Ejemplo|
+| :--- | :--- |:--- |
+|“ ”	|Coincide exactamente con el texto entre comillas dobles| “Behackerpro”|
+|–	|Excluye de la búsqueda el término que va después del signo “-”|	malware -ransomware
+|+	Incluye el término de va después del signo “+”	|ciber +resiliencia
+|"#"	|Busca un hashtag	|"#"pentesting
+|OR	Devuelve resultados sobre un término u otro	|Smartphone OR tablet
+| barra	|Devuelve resultados sobre un término u otro. El mismo OR	|blackhat 1 defcon
 ( )	Utilizado para agrupar operadores	(ballmer OR gates) windows
 cache:	Muestra la página en cache	cache:www.eltiempo.co.
 inurl:	Busca el termino escrito dentro de la URL de los sitios indexados	inurl:admin.php
@@ -93,6 +95,21 @@ NetworkIP/Mask – Search IPs on network
 •	OS Detection TTL
  
 
+
+
+#### default ports
+| port | name|
+| :--- | :--- |
+| 3306 | mysql --script mysql-info mysql-enum|
+| 3389 | rdp port remote port
+| 25 | smtp mail
+| 80 | http
+| 443 | https
+| 20 | ftp
+| 23 | telnet
+| 143 | imap
+| 22 | ssh
+| 53 | dns
 
 •	Unicornscan – Scan Network
 -I: Immediate scan
