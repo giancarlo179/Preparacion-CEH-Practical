@@ -231,8 +231,24 @@ SPF
 TXT
 •	Global Network Inventory – Tool Windows
 ````
+/// SMTP Enumeration
+````
+$ smtp-user-enum -M VRFY -U users.txt -t 10.0.0.1
+$ smtp-user-enum -M EXPN -u admin1 -t 10.0.0.1
+$ smtp-user-enum -M RCPT -U users.txt -T mail-server-ips.txt
+$ smtp-user-enum -M EXPN -D example.com -U users.txt -t 10.0.0.1
+
+/// Enum SMTP with Telnet
+
+telnet <smtp server> 25 or 587
+HELO or EHLO <smtp server>
+MAIL FROM:
+RCPT TO:
+DATA
+SUBJECT
 
 
+````
 ////Other Enum
 ````js
 Enum4linux
