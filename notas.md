@@ -368,7 +368,7 @@ gobuster dir -u 10.10.. -w /usr/share/wordlists/dirb/common.txt -t 50 -x php,htm
 gobuster dir -u http://training.breakthecode.com/ -w /usr/local/dirbuster/directory-list-2.3-medium.txt -x .xml -t 4
 
 Obtención de la ruta completa para un directorio o archivo:
-gobuster dir -e -u URL -w /usr/share/wordlists/dirb/common.txt –wildcard
+gobuster dir -e -u URL -w /usr/share/wordlists/dirb/common.txt --wildcard
 
 Enumerar subdominios
 gobuster dns -d <DNS> -t 100 -w /opt/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -i --wildcard
@@ -379,14 +379,16 @@ Alternativa grafica de OWASP para Fuzzing
 2. Ejecutar el archivo jar con Java: Java -jar Dirbuster-0.12.jar
 
 Esconder el Status Code
-gobuster dir -u URL -w /usr/share/wordlists/dirb/common.txt -n –wildcard
+gobuster dir -u URL -w /usr/share/wordlists/dirb/common.txt -n --wildcard
 
 Deshabilitar el banner de gobuster:
-gobuster dir  -u URL -w /usr/share/wordlists/dirb/common.txt -q –wildcard
+gobuster dir  -u URL -w /usr/share/wordlists/dirb/common.txt -q --wildcard
 
 Para seguir la redireccion:
-gobuster dir -u URL -r -w /usr/share/wordlists/dirb/common.txt -q –wildcard
+gobuster dir -u URL -r -w /usr/share/wordlists/dirb/common.txt -q --wildcard
 
+Autenticacion con credenciales
+gobuster dir -u http://testphp.vulnweb.com/login.php -w /usr/share/wordlists/dirb/common.txt -U test -P test --wildcard
 dir : directory listing
 -u : host
 -w : wordlists
