@@ -360,15 +360,32 @@ TheFatRat
  Inmunity Debugger
 ````
 #### Web Enumeration & attack
-````js
-// dir enumeration
+````
+/// Dir Enumeration
+
+Enumerar archivos con extensiones:
 gobuster dir -u 10.10.. -w /usr/share/wordlists/dirb/common.txt -t 50 -x php,html,txt -q
 gobuster dir -u http://training.breakthecode.com/ -w /usr/local/dirbuster/directory-list-2.3-medium.txt -x .xml -t 4
+
+Obtención de la ruta completa para un directorio o archivo:
+gobuster dir -e -u URL -w /usr/share/wordlists/dirb/common.txt –wildcard
+
+Enumerar subdominios
+gobuster dns -d <DNS> -t 100 -w /opt/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -i --wildcard
 ffuf -H "Host: FUZZ.<DNS>" -w /opt/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt -u http://<IP> -fs 169
-https://sourceforge.net/projects/dirbuster/
 
-Java -jar Dirbuster-0.12.jar
+Alternativa grafica de OWASP para Fuzzing 
+1. Descargar el software: https://sourceforge.net/projects/dirbuster/
+2. Ejecutar el archivo jar con Java: Java -jar Dirbuster-0.12.jar
 
+Esconder el Status Code
+gobuster dir -u URL -w /usr/share/wordlists/dirb/common.txt -n –wildcard
+
+Deshabilitar el banner de gobuster:
+gobuster dir  -u URL -w /usr/share/wordlists/dirb/common.txt -q –wildcard
+
+Para seguir la redireccion:
+gobuster dir -u URL -r -w /usr/share/wordlists/dirb/common.txt -q –wildcard
 
 dir : directory listing
 -u : host
