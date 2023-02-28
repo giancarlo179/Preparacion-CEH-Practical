@@ -1,0 +1,10 @@
+[x] Que servidor tiene un servicio de comunicacion remota 
+[x] Que OS tiene el dispositivo <IP>
+[x] Usted es un hacker etico contratado por una empresa de Bolsa. Un trabajador descontento almaceno informacion en una tarjeta SD que esta en su telefono Mobil. Accede al telefono y recupera el archivo
+[x] Determina de cual es la IP que uso el atacante para realizar el ataque de DoS a la empresa
+[x] Determina cuantas direcciones IP utilizo el atacante para realizar el ataque de DDoS a la empresa
+[x] recupera la contraseña del usuario <username> del sistema <IP> 
+[x] Encuentra la password cifrada 
+[x] Se recupero un disco cifrado, debes desifrarlo y encontrar la flag
+[x] Utiliza tecnicas de criptografia para extraer la contraseña del archivo y encontrar la password del FTP donde se encuentra la flag
+[x] Encuentra la contraseña del usuario <username> para el servicio FTP del servidor <IP>
